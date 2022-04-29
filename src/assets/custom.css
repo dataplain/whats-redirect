@@ -1,0 +1,23 @@
+@font-face {
+  font-family: Mulish;
+  src: url("fonts/Mulish-SemiBold.ttf");
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: Mulish;
+  src: url("fonts/Mulish-ExtraBold.ttf");
+  font-weight: bold;
+}
+
+* {
+  font-family: "Mulish";
+  margin: 0;
+  padding: 0;
+  outline: none;
+  border: none;
+}
+
+body {
+  margin: 20px;
+}
