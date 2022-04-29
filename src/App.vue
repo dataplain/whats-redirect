@@ -2,7 +2,7 @@
   <main class="text-center">
     <img class="logo" alt="WhatsApp Redirect" src="./assets/logo.png">
     <h1>WhatsApp Redirect</h1>
-    <p class="mt-2">Permite iniciar conversas no WhatsApp sem<br />a necessidade de salvar contatos na sua agenda.</p>
+    <p class="mt-2">Permite iniciar conversas no WhatsApp sem a necessidade de salvar contatos na sua agenda.</p>
 
     <div class="col-12 lg:col-4 lg:col-offset-4 mt-3">
       <div class="p-inputgroup">
