@@ -10,12 +10,12 @@
           +55
         </span>
         <input
-          :value="form.phoneNumber"
+          :value="form.phoneNumberInput"
           class="input-number p-inputtext p-component p-inputnumber-input p-inputnumber-input"
           type="tel"
           maxlength="15"
           autofocus
-          @input="updatePhoneNumber"
+          @input="(event) => updatePhoneNumber(event.target.value)"
           @keyup.enter="redirect"
         />
       </div>
@@ -34,35 +34,22 @@
 <script>
 import { ref } from "@vue/reactivity";
 import { computed } from "@vue/runtime-core";
+import NumberFormatter from "@/resources/NumberFormatter";
+import PhoneNumberFormatter from "@/resources/PhoneNumberFormatter";
 
 export default {
   setup() {
     const whatsUrl = process.env.VUE_APP_WHATSAPP_URL;
 
-    function keepNumbers(value) {
-      return value.replace(/[^\d]/g, "");
-    }
-
-    function formatPhoneNumber(phoneNumber) {
-      const checkNumber = keepNumbers(phoneNumber);
-        
-      if (checkNumber.length === 10)
-        return checkNumber.replace(/^(\d{2})(\d{4})(\d{4})$/, "($1) $2-$3");
-      else if (checkNumber.length === 11)
-        return checkNumber.replace(/^(\d{2})(\d{5})(\d{4})$/, "($1) $2-$3");
-      else
-        return checkNumber;
-    }
-
     const form = ref({
-      phoneNumber: "",
+      phoneNumberInput: "",
       phoneNumberDigits: "",
     });
 
-    function updatePhoneNumber(event) {
+    function updatePhoneNumber(value) {
       form.value = {
-        phoneNumberDigits: keepNumbers(event.target.value),
-        phoneNumber: formatPhoneNumber(event.target.value),
+        phoneNumberDigits: NumberFormatter(value),
+        phoneNumberInput: PhoneNumberFormatter(value),
       }
     }
 
