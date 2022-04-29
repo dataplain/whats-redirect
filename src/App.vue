@@ -12,7 +12,7 @@
         <input
           :value="form.phoneNumber"
           class="input-number p-inputtext p-component p-inputnumber-input p-inputnumber-input"
-          type="phone"
+          type="tel"
           maxlength="15"
           autofocus
           @input="updatePhoneNumber"
@@ -60,8 +60,10 @@ export default {
     });
 
     function updatePhoneNumber(event) {
-      form.value.phoneNumberDigits = keepNumbers(event.target.value);
-      form.value.phoneNumber = formatPhoneNumber(form.value.phoneNumberDigits);
+      form.value = {
+        phoneNumberDigits: keepNumbers(event.target.value),
+        phoneNumber: formatPhoneNumber(event.target.value),
+      }
     }
 
     const isValidPhoneNumber = computed(() =>
