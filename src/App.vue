@@ -9,12 +9,13 @@
         <span class="p-inputgroup-addon">
           +55
         </span>
-        <input-mask
-          v-model="phoneNumber"
-          :auto-clear="false"
-          mask="(99) 99999-9999"
-          class="input-number"
+        <input
+          :value="form.phoneNumber"
+          class="input-number p-inputtext p-component p-inputnumber-input p-inputnumber-input"
+          type="phone"
+          maxlength="15"
           autofocus
+          @input="updatePhoneNumber"
           @keyup.enter="redirect"
         />
       </div>
@@ -37,22 +38,45 @@ import { computed } from "@vue/runtime-core";
 export default {
   setup() {
     const whatsUrl = process.env.VUE_APP_WHATSAPP_URL;
-    const phoneNumber = ref("");
 
-    const phoneNumberDigits = computed(() => phoneNumber.value.replace(/[^\d]/g, ""));
+    function keepNumbers(value) {
+      return value.replace(/[^\d]/g, "");
+    }
+
+    function formatPhoneNumber(phoneNumber) {
+      const checkNumber = keepNumbers(phoneNumber);
+        
+      if (checkNumber.length === 10)
+        return checkNumber.replace(/^(\d{2})(\d{4})(\d{4})$/, "($1) $2-$3");
+      else if (checkNumber.length === 11)
+        return checkNumber.replace(/^(\d{2})(\d{5})(\d{4})$/, "($1) $2-$3");
+      else
+        return checkNumber;
+    }
+
+    const form = ref({
+      phoneNumber: "",
+      phoneNumberDigits: "",
+    });
+
+    function updatePhoneNumber(event) {
+      form.value.phoneNumberDigits = keepNumbers(event.target.value);
+      form.value.phoneNumber = formatPhoneNumber(form.value.phoneNumberDigits);
+    }
 
     const isValidPhoneNumber = computed(() =>
-      phoneNumberDigits.value.length >= 10 && phoneNumberDigits.value.length <= 11
+      form.value.phoneNumberDigits.length >= 10 && form.value.phoneNumberDigits.length <= 11
     );
 
     function redirect() {
       if (isValidPhoneNumber.value) {
-        window.location.href = `${whatsUrl}${phoneNumberDigits.value}`;
+        window.location.href = `${whatsUrl}${form.value.phoneNumberDigits}`;
       }
     }
 
     return {
-      phoneNumber,
+      form,
+      updatePhoneNumber,
       isValidPhoneNumber,
       redirect,
     }
